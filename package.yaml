@@ -1,0 +1,49 @@
+spec-version: 0.35.1
+name: live
+version: 0.1.0.0
+maintainer: Head-Gardener <rashbin2019np@gmail.com>
+github: head-gardener/live
+category: Web
+extra-source-files:
+  - CHANGELOG.md
+
+ghc-options: 
+  - -Wall
+
+language: GHC2021
+default-extensions:
+  - OverloadedStrings
+  - TemplateHaskell
+  - TypeFamilies
+
+dependencies:
+  - base >= 4.12 && < 5
+  - mtl
+  - text
+  - blaze-html
+  - happstack-server
+  - acid-state
+  - safecopy
+
+library:
+  source-dirs: src
+  exposed-modules:
+    - Data.Post
+  # generated-other-modules: Paths_live
+
+executable:
+  source-dirs: app
+  main: Main.hs
+  dependencies:
+    - live
+
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs:
+      - test
+      - src
+    dependencies:
+      - hspec
+      - QuickCheck
+    build-tools: hspec-discover

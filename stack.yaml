@@ -1,0 +1,8 @@
+resolver:
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/12.yaml
+
+packages:
+- .
+
+extra-deps:
+  - happstack-server-7.8.0.2

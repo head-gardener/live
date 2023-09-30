@@ -31,6 +31,7 @@ mkYesod
   [parseRoutes|
 / HomeR GET POST
 /post/#PostId PostR GET
+/favicon.ico FaviconR GET
 |]
 
 instance Yesod Live where
@@ -58,6 +59,9 @@ instance YesodPersist Live where
 
 instance RenderMessage Live FormMessage where
   renderMessage _ _ = defaultFormMessage
+
+getFaviconR :: Handler ()
+getFaviconR = sendFile "image/ico" "res/favicon.ico"
 
 getPostR :: PostId -> Handler Html
 getPostR postId = do

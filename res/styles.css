@@ -1,0 +1,98 @@
+/* Reset default browser styles */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* colors */
+:root {
+  --primary: #ABD4D3;
+  --secondary: #5AF098;
+  --ternar: #71F852;
+}
+
+/* Set a max-width and center the content */
+body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Ubuntu, sans-serif;
+}
+
+/* Style headings */
+h1 {
+  font-size: 36px;
+  margin: 2em;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+input[type=text] {
+  margin: 1em 0em 1em 0em;
+  padding: 7px;
+  width: 100%;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type=submit] {
+  padding: 1em;
+  font: bold 0.6em sans-serif;
+  border: 2px outset grey;
+  border-radius: 5px;
+  background: var(--primary);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+input[type=submit]:after {
+  content: " >>>";
+}
+
+input[type=submit]:hover,
+input[type=submit]:focus {
+  outline: none;
+  background: #000;
+  color: #fff;
+}
+
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Style lists */
+ul, ol {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+/* Style images */
+img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.post {
+  border: 2px outset grey;
+  background-color: var(--primary);
+  padding: 2em;
+  margin: 1em 0em 1em 0em;
+}
+
+.footer {
+  margin-top: 4em;
+  font-size: 15px;
+  text-align: center;
+  color: #3c3c3c
+}

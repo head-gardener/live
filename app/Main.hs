@@ -32,23 +32,24 @@ mkYesod
 / HomeR GET POST
 /post/#PostId PostR GET
 /favicon.ico FaviconR GET
+/styles.css StylesR GET
 |]
 
 instance Yesod Live where
   defaultLayout widget = do
-    let style :: Widget = toWidget [lucius| h2 { color: green; } |]
-    pc <- widgetToPageContent $ widget <> style
+    pc <- widgetToPageContent widget
     withUrlRenderer
       [hamlet|
-                $doctype 5
-                <html>
-                    <head>
-                        <title>#{pageTitle pc}
-                        ^{pageHead pc}
-                        <meta name=keywords content="some sample keywords">
-                    <body>
-                        ^{pageBody pc}
-            |]
+        $doctype 5
+        <html>
+          <head>
+            <link rel="stylesheet" type="text/css" href="@{StylesR}">
+            <title>#{pageTitle pc}
+            ^{pageHead pc}
+            <meta name=keywords content="some sample keywords">
+          <body>
+            ^{pageBody pc}
+      |]
 
 instance YesodPersist Live where
   type YesodPersistBackend Live = SqlBackend
@@ -60,8 +61,15 @@ instance YesodPersist Live where
 instance RenderMessage Live FormMessage where
   renderMessage _ _ = defaultFormMessage
 
-getFaviconR :: Handler ()
-getFaviconR = sendFile "image/ico" "res/favicon.ico"
+getFaviconR :: Handler TypedContent
+getFaviconR = do
+  cacheSeconds $ 60 * 60 * 24 * 30
+  sendFile "image/ico" "res/favicon.ico"
+
+getStylesR :: Handler TypedContent
+getStylesR = do
+  cacheSeconds $ 60 * 60 * 24 * 30
+  sendFile "text/css" "res/styles.css"
 
 getPostR :: PostId -> Handler Html
 getPostR postId = do
@@ -73,7 +81,6 @@ getPostR postId = do
         setTitle . toHtml . ("Post by " <>) . postAuthor . entityVal $ p
         drawPost (entityVal p) Nothing
         homeHyper
-        postStyle
 
 getHomeR :: Handler Html
 getHomeR = do
@@ -83,7 +90,6 @@ getHomeR = do
     setTitle "Live"
     submitForm widget enctype
     drawPosts posts
-    postStyle
 
 postHomeR :: Handler Html
 postHomeR = do
@@ -98,18 +104,6 @@ postHomeR = do
 
 homeHyper :: Widget
 homeHyper = toWidget [hamlet|<a href=@{HomeR}>go back|]
-
-postStyle :: Widget
-postStyle =
-  toWidget
-    [lucius|
-  .post { 
-    background: green;
-    margin: 5px 0px 5px 0px;
-  }
-  .post-author { color: #aaa }
-  .post-id { color: #aaa }
-|]
 
 postForm :: Html -> MForm Handler (FormResult Post, Widget)
 postForm =
@@ -136,14 +130,14 @@ drawPost (Post author content) postId = do
 drawPosts :: [Entity Post] -> Widget
 drawPosts = foldr (flip (>>) . wrap drawPost) header
   where
-    header = toWidget [hamlet|<h2> Posts:|]
+    header = toWidget [hamlet|<h1> Posts:|]
     wrap f e = f (entityVal e) $ Just (entityKey e)
 
 submitForm :: Widget -> Enctype -> Widget
 submitForm form enc = do
   toWidget
     [whamlet|
-  <h2> Submit: 
+  <h1> Submit: 
   <form method=post action=@{HomeR} enctype=#{enc}>
             ^{form}
             <button>Submit

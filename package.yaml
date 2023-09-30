@@ -15,14 +15,23 @@ default-extensions:
   - OverloadedStrings
   - TemplateHaskell
   - TypeFamilies
+  - FlexibleContexts
+  - FlexibleInstances
+  - ViewPatterns
+  - QuasiQuotes
 
 dependencies:
   - base >= 4.12 && < 5
   - mtl
   - text
   - blaze-html
-  - happstack-server
-  - acid-state
+  - yesod
+  - yesod-form
+  - monad-logger
+  - resourcet
+  - persistent
+  - persistent-sqlite
+  - persistent-template
   - safecopy
 
 library:
